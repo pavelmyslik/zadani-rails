@@ -1,0 +1,2 @@
+class Buyer < InvoiceParty
+end

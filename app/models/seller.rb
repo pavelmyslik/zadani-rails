@@ -1,0 +1,2 @@
+class Seller < InvoiceParty
+end

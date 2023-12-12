@@ -3,27 +3,30 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.2"
 
+gem "bootsnap", require: false
+gem "graphiql-rails", group: :development
+gem "importmap-rails"
+gem "jbuilder"
+gem "puma", "~> 5.0"
 gem "rails", "~> 7.0.4", ">= 7.0.4.2"
+gem "redis", "~> 4.0"
 gem "sprockets-rails"
 gem "sqlite3", "~> 1.4"
-gem "puma", "~> 5.0"
-gem "importmap-rails"
-gem "turbo-rails"
 gem "stimulus-rails"
-gem "jbuilder"
-gem "redis", "~> 4.0"
-gem 'slim-rails'
-gem 'graphql-pagination'
-gem 'graphql', '~> 1.13', '>= 1.13.5'
+gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
-gem "bootsnap", require: false
-gem 'search_object_graphql', '0.3.1'
+gem 'devise'
+gem 'graphql', '~> 1.13', '>= 1.13.5'
+gem 'graphql-pagination'
 gem 'search_object', '~> 1.2', '>= 1.2.5'
+gem 'search_object_graphql', '0.3.1'
+gem 'slim-rails'
 gem 'webpacker', '~> 5.x'
 
 group :development, :test do
   gem 'faker'
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'rspec-rails', '~> 6.0.0'
 end
 
 group :development do
@@ -35,4 +38,3 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
-gem "graphiql-rails", group: :development

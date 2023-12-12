@@ -1,32 +1,29 @@
-# Kódér
+# RoR developer
 
 ## Intro
-Tvým úkolem je
-- nastylování homepage designu podle https://www.figma.com/file/soMJHrKVsIs2h4tlhQAUfK/FO---Frontend?type=design&node-id=1-4449&mode=design&t=gX6kWIxgtTQrWDY8-0
-- nastylování inputů pro formulář faktury podle https://www.figma.com/file/soMJHrKVsIs2h4tlhQAUfK/FO---Frontend?type=design&node-id=4-126&mode=design&t=gX6kWIxgtTQrWDY8-0
+### Tvým úkolem je
+- Připravit logiku pro periodické faktury.
+- Připravit GraphQL query pro listování faktur, jak existujících, tak budoucích.
+
+### Info
+- Zadání je relativně složité a komplexní, ale budeme vědět, jaké máš schopnosti. Kdyby si měl pochybnosti, jestli zadání zvládneš, snaž se z úkolu vypracovat co nejvíc.
+- Snažil jsem se připravit kód, aby se ti s ním dobře pracovalo a nemusel sis ztrácet čas s vymýšlením modelu a asociací.
 
 ## Zadání
-- Forkni si tento projekt, výchozí branch je dev, rebasni si dev s main branchi, pak začni pracovat. Jako výsledek tvé práce pošli odkaz na repozitář, kam pushnes své změny.
-- Nastyluj HP podle designu ve Figma, jak pro desktop, tak pro mobilní zařízení. Design je k dispozici pouze pro desktop variantu; chceme vidět, jak si dokážeš poradit se zpracováním responsivity, nejen technicky, ale i kreativně, proto nejsou k dispozici designy pro mobilní variantu. Ne vždy jsou k dispozici designy pro všechny rozlišení, proto potřebujeme vidět, jak si s tím poradíš. Nebudeš začínat s prázdným projektem, ale s částečně nastylovanou HP, záleží na tobě co se stávajícím kódem uděláš.
-- Stránka je záměrně trochu 'rozbitá', podívej se co není dobře a chyby oprav.
-- Implementuj adaptivní placeholdery... Na http://localhost:3000/form najdeš formulář, uprav komponenty inputu, tak aby fungovaly podobně, jako např. tu https://codepen.io/jasonbecker/pen/wdyLym a odpovídaly designům, které jsou ve Figma
+- Forkni si tento projekt, pak začni pracovat. Jako výsledek tvé práce pošli odkaz na repozitář, kam pushnes své změny.
+- Připrav logiku pro tvorbu periodických faktur. Uživatel má možnost nastavit si u faktury profil opakování, tzn. vytvoří se asociace na recurring_profile, který definuje frekvenci opakování, způsob ukončení (počet/datum).
+- Dopln do ProcessRecurringInvoicesJob, který bude převádět drafty do reálných faktur (číslo další faktury musí mít číslo za poslední faktury + 1).
+- Uživatel má možnost vylistovat faktury a zároveň vidět budoucí faktury (draft je Invoice bez attributu number), které vznikají na základě recurring_profile - Kazda Invoice muze mit maximalne jednu budouci faktur.
+- Uživatel má možnost vytvořit fakturu pomocí GraphQL mutace. (OPTIONAL)
+- V ideálním případě by měl být kód kompletně otestovaný, pokud nebudeš stíhat, tak otestuj alespoň core funkcionalitu.
 
 ## Shrnutí
-- Na vypracování úkolu máš maximálně 5 hodin, více času úkolu prosím nevěnuj, potřebujeme vidět, co zvládneš za daný čas vytvořit.
-- Tento repozitář obsahuje nový Rails projekt, který reflektuje náš akutální stack na kterém faktura běží, potřebujeme vidět jak se v něm zvládneš zorientovat a zároveň zjistíš na jakých vnitřnostech FO cca běží.
-
-## Proč zadání vypadá jak vypadá?
-Potřebujeme si oveřit že:
-- zvládneš nastylovat stránku v SASSu (organizace kódu, přístup stylování, znovupoužitelnost)
-- zlvádneš pracovat s GITem
-- vyznáš se ve větším projektu, Rails/Slim/SASS a Vue ti nedělá problémy
-- poradíš si s překlady v railsech i ve Vue
-- seš pečliv(ý/á), dodržuješ best practice HTML/CSS/pagespeed
-- kamarádíš se s Vue a JS není tvůj nepřítel
-- dokážeš si poradit s responsivem i bez designů
+- Na vypracování úkolu máš 8 hodin, více času úkolu prosím nevěnuj, potřebujeme vidět, co zvládneš za daný čas vytvořit.
+- Je možný že za 8h nezvládneš zadání vypracovat, nejde nám o kompletní funkcionalitu, ale chcem vědět jak premejšlíš a co zvládneš napsat.
 
 ## Init projektu
 Všichni používáme MacOS a projekt máme nainstalovány přímo v systému, ale pro rychlejší init projektu jsem připravil Docker.
+Pokud máš MacOS, nejspíš nebudeš mít problém rozjet projekt mimo Docker.
 
 ## Docker
 

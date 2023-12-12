@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_12_140756) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_12_154304) do
   create_table "invoice_lines", force: :cascade do |t|
     t.bigint "invoice_id", null: false
     t.string "description"
@@ -47,6 +47,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_12_140756) do
     t.string "category_slug"
     t.string "sub_category_slug"
     t.string "locale"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "recurring_profiles", force: :cascade do |t|
+    t.string "frequency"
+    t.date "ends_on"
+    t.integer "ends_after_count"
+    t.boolean "automatic_emails"
+    t.integer "invoices_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

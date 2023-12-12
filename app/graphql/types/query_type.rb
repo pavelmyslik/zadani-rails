@@ -1,10 +1,10 @@
 module Types
   class QueryType < Types::BaseObject
-    # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
-
     field :posts, 'Get posts', resolver: Resolvers::PostsSearch
+
+    # field :invoices, 'Get invoices', resolver: Resolvers::InvoicesSearch
   end
 end

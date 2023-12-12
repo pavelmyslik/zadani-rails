@@ -18,6 +18,15 @@ class Invoice < ApplicationRecord
 
   before_save :calculate_total
 
+  include Recurringable
+
+  class << self
+    def increment_number(number)
+      digits = number.scan(/\d+$/).first || ''
+      number.sub(/\d+$/, '') + digits.next
+    end
+  end
+
   private
 
   def exact_total

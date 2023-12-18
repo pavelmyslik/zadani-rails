@@ -20,5 +20,9 @@ FactoryBot.define do
         create_list(:invoice, 3, :with_one_line, recurring_profile:)
       end
     end
+
+    trait :weekly do
+      frequency { 'weekly' }
+    end
   end
 end

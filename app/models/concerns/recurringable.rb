@@ -23,5 +23,6 @@ module Recurringable
     return unless recurringable?
     return unless recurring_profile.should_build_next_one?
 
+    recurring_profile.build_draft_invoice(self)
   end
 end

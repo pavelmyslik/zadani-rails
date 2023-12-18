@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class RecurringProfile < ActiveRecord::Base
-  has_many :invoices, :foreign_key => 'recurring_profile_id'
+class RecurringProfile < ApplicationRecord
+  has_many :invoices
 
   attr_accessor :end_options
 
@@ -20,8 +20,14 @@ class RecurringProfile < ActiveRecord::Base
     count_active? || date_active?
   end
 
-  def build_invoice(invoice)
-    #musím snížit počet zbývajících opakování
+  def build_invoice(invoice); end
+
+  def build_draft_invoice(invoice)
+    draft = invoice.dup
+    draft.number = nil
+
+    draft.save!(validate: false)
+    reduce_remaining_count if after_count?
   end
 
   protected
@@ -31,7 +37,7 @@ class RecurringProfile < ActiveRecord::Base
   def handle_end_options
     self.end_options = if ends_on.present?
                          'after_date'
-                       elsif ends_after_count.present?
+                       elsif after_count?
                          'after_count'
                        else
                          'never'
@@ -46,5 +52,19 @@ class RecurringProfile < ActiveRecord::Base
 
   def date_active?
     ends_on.present? && ends_on >= Time.zone.today
+  end
+
+  def after_count?
+    end_options == 'after_count'
+  end
+
+  def reduce_remaining_count
+    nullify_remaining_count if ends_after_count == 1
+
+    update!(ends_after_count: ends_after_count - 1)
+  end
+
+  def nullify_remaining_count
+    update!(ends_after_count: nil)
   end
 end

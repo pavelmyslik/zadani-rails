@@ -10,7 +10,7 @@ RSpec.describe Invoice do
       it { is_expected.to be_truthy }
     end
 
-    context 'when invoice is not recurring' do
+    context 'when invoice is not recurring profile' do
       let(:invoice) { create(:invoice) }
 
       it { is_expected.to be_falsey }

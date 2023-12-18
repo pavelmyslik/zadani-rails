@@ -60,4 +60,34 @@ RSpec.describe RecurringProfile do
       end
     end
   end
+
+  describe '#build_draft_invoice' do
+    subject(:build_draft) { recurring_profile.build_draft_invoice(invoice) }
+
+    let(:recurring_profile) { create(:recurring_profile, :weekly, :with_end_date) }
+    let(:invoice) { create(:invoice, :with_one_line, recurring_profile:) }
+    let(:draft) { Invoice.drafts.last }
+
+    it 'creates a new draft invoice' do
+      expect { build_draft }.to change { Invoice.drafts.count }.by(1)
+    end
+
+    it 'sets nil number for draft invoice' do
+      build_draft
+
+      expect(draft.number).to be_nil
+    end
+
+    it 'sets issued_on to next date correctly' do
+      build_draft
+
+      expect(draft.issued_on).to eq(invoice.issued_on + 1.week)
+    end
+
+    it 'sets due_on to next date correctly' do
+      build_draft
+
+      expect(draft.due_on).to eq(invoice.due_on + 1.week)
+    end
+  end
 end

@@ -11,4 +11,8 @@ module Recurringable
 
   def build_next_recurring_draft_if_necessary
   end
+
+  def recurringable?
+    recurring_profile.present?
+  end
 end

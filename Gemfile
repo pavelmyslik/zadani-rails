@@ -22,11 +22,15 @@ gem 'search_object', '~> 1.2', '>= 1.2.5'
 gem 'search_object_graphql', '0.3.1'
 gem 'slim-rails'
 gem 'webpacker', '~> 5.x'
+gem "rubocop"
+gem "rubocop-rails", require: false
 
 group :development, :test do
   gem 'faker'
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'rspec-rails', '~> 6.0.0'
+  gem "factory_bot_rails"
+  gem "ffaker"
 end
 
 group :development do

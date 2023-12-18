@@ -61,3 +61,6 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+Dir["#{File.dirname(__FILE__)}/support/*.rb"].each { |file| require file }
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |file| require file }

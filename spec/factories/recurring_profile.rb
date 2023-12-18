@@ -16,5 +16,11 @@ FactoryBot.define do
     trait :never do
       end_options { 'never' }
     end
+
+    trait :with_invoices do
+      after(:create) do |recurring_profile|
+        create_list(:invoice, 3, :with_line, :recurringable, recurring_profile:)
+      end
+    end
   end
 end

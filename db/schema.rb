@@ -67,4 +67,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_12_154304) do
     t.string "reset_password_token"
   end
 
+  create_table "invoices", force: :cascade do |t|
+    t.bigint "subscription_id"
+    t.string "number"
+    t.datetime "issued_on", precision: nil
+    t.datetime "due_on", precision: nil
+    t.string "means_of_payment", default: "cash"
+    t.float "total"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "paid_at", precision: nil
+    t.datetime "submitted_at", precision: nil
+    t.datetime "deleted_at", precision: nil
+    t.integer "recurring_profile_id"
+    t.virtual "state", type: :integer, as: "\nCASE\n    WHEN (paid_at IS NOT NULL) THEN 1\n    WHEN (submitted_at IS NOT NULL) THEN 2\n    ELSE 5\nEND", stored: true
+  end
 end

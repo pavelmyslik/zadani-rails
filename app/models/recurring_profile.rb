@@ -15,8 +15,9 @@ class RecurringProfile < ActiveRecord::Base
   after_update :update_recurring_invoices
 
   def should_build_next_one?
-    return false if end_options == 'never'
+    return true if end_options == 'never'
 
+    count_active? || date_active?
   end
 
   def build_invoice(invoice)
@@ -25,8 +26,7 @@ class RecurringProfile < ActiveRecord::Base
 
   protected
 
-  def update_recurring_invoices
-  end
+  def update_recurring_invoices; end
 
   def handle_end_options
     self.end_options = if ends_on.present?
@@ -36,5 +36,15 @@ class RecurringProfile < ActiveRecord::Base
                        else
                          'never'
                        end
+  end
+
+  private
+
+  def count_active?
+    ends_after_count.present? && ends_after_count.positive?
+  end
+
+  def date_active?
+    ends_on.present? && ends_on >= Time.zone.today
   end
 end

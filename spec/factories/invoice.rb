@@ -18,6 +18,18 @@ FactoryBot.define do
       end
     end
 
+    trait :recurringable_with_date do
+      after(:create) do |invoice|
+        create(:recurring_profile, :with_end_date, invoices: [invoice])
+      end
+    end
+
+    trait :recurringable_with_count do
+      after(:create) do |invoice|
+        create(:recurring_profile, :with_end_count, invoices: [invoice])
+      end
+    end
+
     trait :recurringable do
       after(:create) do |invoice|
         create(:recurring_profile, invoices: [invoice])

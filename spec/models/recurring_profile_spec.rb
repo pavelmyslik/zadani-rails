@@ -27,7 +27,7 @@ RSpec.describe RecurringProfile do
     subject(:should_build_next_one?) { recurring_profile.should_build_next_one? }
 
     context 'when end_options is never' do
-      let(:recurring_profile) { create(:recurring_profile, :never) }
+      let(:recurring_profile) { create(:recurring_profile) }
 
       it { is_expected.to be_truthy }
     end

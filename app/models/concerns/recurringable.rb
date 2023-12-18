@@ -8,9 +8,12 @@ module Recurringable
     after_destroy :destroy_recurring_profile
     after_save  :build_next_recurring_draft_if_necessary
   end
+
   def recurringable?
     recurring_profile.present?
   end
+
+  private
 
   def destroy_recurring_profile
     recurring_profile&.destroy

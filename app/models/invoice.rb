@@ -22,6 +22,7 @@ class Invoice < ApplicationRecord
   before_save :set_dates_for_draft, if: -> { recurringable? && draft? }
 
   scope :drafts, -> { where(number: nil) }
+  scope :existing, -> { where.not(number: nil) }
 
   include Recurringable
 

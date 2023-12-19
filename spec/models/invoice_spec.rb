@@ -44,14 +44,36 @@ RSpec.describe Invoice do
       end
     end
 
+    context 'when invoice is a draft' do
+      it 'does not create a new draft invoice' do
+        draft = build(:invoice, :draft)
+        draft.save(validate: false)
+        expect(drafts.count).to eq(1)
+      end
+    end
+
     context 'when invoice has a recurring profile' do
       let(:invoice) { build(:invoice, recurring_profile:) }
+
+      before { invoice.save }
 
       context 'when recurring profile is not active' do
         let(:recurring_profile) { create(:recurring_profile, :with_end_date, ends_on: Time.zone.yesterday) }
 
         it 'does not create a new draft invoice' do
           expect(drafts.count).to eq(0)
+        end
+      end
+
+      context 'when recurring profile is active' do
+        let(:recurring_profile) { create(:recurring_profile, :with_end_date, ends_on: Time.zone.tomorrow) }
+
+        it 'creates a new draft invoice' do
+          expect(drafts.count).to eq(1)
+        end
+
+        it 'sets nil number for draft invoice' do
+          expect(drafts.last.number).to be_nil
         end
       end
     end

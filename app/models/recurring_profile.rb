@@ -20,7 +20,19 @@ class RecurringProfile < ApplicationRecord
     count_active? || date_active?
   end
 
-  def build_invoice(invoice); end
+  def build_invoice(draft_invoice)
+    return unless draft_invoice.creatable?
+
+    new_number = Invoice.increment_number(last_invoice.number)
+
+    ApplicationRecord.transaction do
+      new_invoice = draft_invoice.dup
+      new_invoice.number = new_number
+      new_invoice.save!
+
+      draft_invoice.destroy!
+    end
+  end
 
   def build_draft_invoice(invoice)
     draft = invoice.dup
@@ -66,5 +78,9 @@ class RecurringProfile < ApplicationRecord
 
   def nullify_remaining_count
     update!(ends_after_count: nil)
+  end
+
+  def last_invoice
+    invoices.where('number IS NOT NULL').order(:number).last
   end
 end

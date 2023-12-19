@@ -65,11 +65,13 @@ RSpec.describe RecurringProfile do
     subject(:build_draft) { recurring_profile.build_draft_invoice(invoice) }
 
     let(:recurring_profile) { create(:recurring_profile, :weekly, :with_end_date) }
-    let(:invoice) { create(:invoice, :with_one_line, recurring_profile:) }
+    let(:invoice) { build(:invoice, :with_one_line, recurring_profile:) }
     let(:draft) { Invoice.drafts.last }
 
     it 'creates a new draft invoice' do
-      expect { build_draft }.to change { Invoice.drafts.count }.by(1)
+      build_draft
+
+      expect(Invoice.drafts.count).to eq(1)
     end
 
     it 'sets nil number for draft invoice' do
@@ -88,6 +90,49 @@ RSpec.describe RecurringProfile do
       build_draft
 
       expect(draft.due_on).to eq(invoice.due_on + 1.week)
+    end
+  end
+
+  describe '#build_invoice' do
+    subject(:build_invoice) { recurring_profile.build_invoice(draft_invoice) }
+
+    let(:recurring_profile) { create(:recurring_profile, :weekly, :with_end_date) }
+    let!(:invoice) { create(:invoice, :with_one_line, recurring_profile:, number: '2') }
+    let(:draft_invoice) { Invoice.drafts.last }
+
+    context 'when draft invoice is not creatable' do
+      before { allow(draft_invoice).to receive(:creatable?).and_return(false) }
+
+      it 'does not create a new invoice' do
+        expect { build_invoice }.not_to(change { Invoice.count })
+      end
+    end
+
+    context 'when draft invoice is creatable' do
+      before { allow(draft_invoice).to receive(:creatable?).and_return(true) }
+
+      it 'creates a new invoice' do
+        expect { build_invoice }.to change { Invoice.count }.by(1)
+      end
+
+      it 'sets number for new invoice correctly' do
+        build_invoice
+        new_invoice = Invoice.where('NUMBER IS NOT NULL').last
+
+        expect(new_invoice.number).to eq('3')
+      end
+
+      it 'deletes old draft invoice' do
+        build_invoice
+
+        expect { draft_invoice.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'creates a new draft invoice' do
+        build_invoice
+
+        expect(Invoice.drafts.count).to eq(1)
+      end
     end
   end
 end

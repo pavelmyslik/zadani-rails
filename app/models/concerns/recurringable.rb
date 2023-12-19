@@ -20,6 +20,7 @@ module Recurringable
   end
 
   def build_next_recurring_draft_if_necessary
+    return if draft?
     return unless recurringable?
     return unless recurring_profile.should_build_next_one?
 

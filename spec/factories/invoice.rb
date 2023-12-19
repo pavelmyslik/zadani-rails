@@ -35,5 +35,9 @@ FactoryBot.define do
         create(:recurring_profile, invoices: [invoice])
       end
     end
+
+    trait :draft do
+      number { nil }
+    end
   end
 end

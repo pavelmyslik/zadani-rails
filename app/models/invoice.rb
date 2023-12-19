@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class Invoice < ApplicationRecord
   attribute :issued_on,    :date, default: -> { Time.zone.today }
   attribute :due_on,       :date, default: -> { Time.zone.today }
   attribute :tax_point_on, :date, default: -> { Time.zone.today }
 
   has_many :lines, class_name: 'InvoiceLine',
-           dependent: :destroy, inverse_of: :invoice
+                   dependent: :destroy, inverse_of: :invoice
   has_one :seller, dependent: :destroy, inverse_of: :invoice
   has_one :buyer,  dependent: :destroy, inverse_of: :invoice
 
@@ -48,6 +50,12 @@ class Invoice < ApplicationRecord
       self.issued_on += 1.year
       self.due_on    += 1.year
     end
+  end
+
+  def creatable?
+    return false unless draft?
+
+    issued_on == Time.zone.today
   end
 
   private

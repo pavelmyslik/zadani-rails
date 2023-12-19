@@ -32,5 +32,13 @@ module Types
     def drafts
       Invoice.drafts.all
     end
+
+    field :subscription, Types::SubscriptionType, null: true, description: 'Find a subscription by its ID' do
+      argument :id, ID, required: true
+    end
+
+    def subscription(id:)
+      Subscription.find(id)
+    end
   end
 end
